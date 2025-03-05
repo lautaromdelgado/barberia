@@ -23,13 +23,10 @@ type Config struct {
 }
 
 // Variable global para almacenar la configuración (Singleton)
-var (
-	configInstance *Config
-	once           sync.Once
-)
+var once sync.Once
 
 // GetConfig obtiene la configuración de la base de datos
-func (c *Config) GetConfig() (*Config, error) {
+func (c *Config) GetConfig() error {
 	var err error
 	once.Do(func() {
 		err = godotenv.Load("../config/variables_entorno/.env")
@@ -40,27 +37,28 @@ func (c *Config) GetConfig() (*Config, error) {
 		port, _ := strconv.Atoi(os.Getenv("DB_PORT"))
 		parseTime, _ := strconv.ParseBool(os.Getenv("DB_PARSE_TIME"))
 
-		configInstance = &Config{
-			User:      os.Getenv("DB_USER"),
-			Password:  os.Getenv("DB_PASSWORD"),
-			Host:      os.Getenv("DB_HOST"),
-			Port:      port,
-			DBName:    os.Getenv("DB_NAME"),
-			Charset:   os.Getenv("DB_CHARSET"),
-			ParseTime: parseTime,
-			Loc:       os.Getenv("DB_LOC"),
-		}
+		c.User = os.Getenv("DB_USER")
+		c.Password = os.Getenv("DB_PASSWORD")
+		c.Host = os.Getenv("DB_HOST")
+		c.Port = port
+		c.DBName = os.Getenv("DB_NAME")
+		c.Charset = os.Getenv("DB_CHARSET")
+		c.ParseTime = parseTime
+		c.Loc = os.Getenv("DB_LOC")
 	})
 
-	if configInstance == nil {
-		return nil, errors.New("error loading configuration")
+	if c == nil {
+		return errors.New("error getting config: GetConfig is nil")
 	}
 
-	return configInstance, nil
+	return nil
 }
 
 // GetDNS obtiene el DSN de la base de datos
-func (c Config) GetDNS() string {
+func (c Config) GetDNS() (string, error) {
+	if err := c.GetConfig(); err != nil {
+		return "", err
+	}
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=%t&loc=%s",
 		url.QueryEscape(c.User),
 		url.QueryEscape(c.Password),
@@ -72,5 +70,5 @@ func (c Config) GetDNS() string {
 		c.Loc,
 	)
 
-	return dsn
+	return dsn, nil
 }

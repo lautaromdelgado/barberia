@@ -1,25 +1,21 @@
 package main
 
 import (
+	"barberia/config/mysql"
 	"fmt"
 	"log"
-
-	VariablesEntorno "barberia/config/variables_entorno"
 
 	"github.com/labstack/echo/v4"
 )
 
 func main() {
-	// Crear instancia de Config
-	configEnv := new(VariablesEntorno.Config)
-	// Cargar configuración una sola vez
-	config, err := configEnv.GetConfig()
+	database := new(mysql.Config)
+	db, err := database.GetDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Imprimir DSN generado
-	fmt.Println("DSN generado:", config.GetDNS())
+	fmt.Printf("DB: %v\n", db)
 
 	// Crear instancia de Echo
 	e := echo.New()
