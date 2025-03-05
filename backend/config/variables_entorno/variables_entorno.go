@@ -55,7 +55,7 @@ func (c *Config) GetConfig() error {
 }
 
 // GetDNS obtiene el DSN de la base de datos
-func (c Config) GetDNS() (string, error) {
+func (c *Config) GetDNS() (string, error) {
 	if err := c.GetConfig(); err != nil {
 		return "", err
 	}
