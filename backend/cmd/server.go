@@ -1,7 +1,7 @@
 package main
 
 import (
-	"barberia/config/mysql"
+	"barberia/internal/database/mysql"
 	"fmt"
 	"log"
 
