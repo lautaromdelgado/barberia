@@ -6,10 +6,12 @@ import (
 	"gorm.io/gorm"
 )
 
+// Estructura de la clase UsersRepository
 type UsersRepository struct {
-	db *gorm.DB
+	db *gorm.DB // Base de datos
 }
 
+// Constructor de la clase UsersRepository
 func NewUsersRepository(db *gorm.DB) *UsersRepository {
 	return &UsersRepository{db: db}
 }
@@ -21,4 +23,13 @@ func (r *UsersRepository) GetAll() ([]models.User, error) {
 		return nil, err
 	}
 	return users, nil
+}
+
+// Retornar un usuario por su id
+func (r *UsersRepository) GetById(id uint) (*models.User, error) {
+	var user models.User
+	if err := r.db.First(&user, id).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
 }
