@@ -38,3 +38,8 @@ func (r *UsersRepository) GetById(id uint) (*models.User, error) {
 func (r *UsersRepository) CreateUser(user *models.User) error {
 	return r.db.Create(user).Error
 }
+
+// Editar un usuario por su id
+func (r *UsersRepository) UpdateUser(id uint, user *models.User) error {
+	return r.db.Model(&models.User{}).Where("id = ?", id).Updates(user).Error
+}

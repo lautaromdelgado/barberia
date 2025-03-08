@@ -37,3 +37,11 @@ func (s *UsersServices) CreateNewUser(user *models.User) error {
 	}
 	return s.UsersRepo.CreateUser(user)
 }
+
+// Editar un usuario por su id
+func (s *UsersServices) UpdateUser(id uint, user *models.User) error {
+	if user.Nombre != "" && user.Apellido != "" && user.DNI != "" {
+		return errors.New("at least one field is required")
+	}
+	return s.UsersRepo.UpdateUser(id, user)
+}

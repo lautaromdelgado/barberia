@@ -37,7 +37,7 @@ func (h *UsersHandler) GetUserById(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"status":  "error",
-			"message": "Invalid id",
+			"message": "invalid id",
 		})
 	}
 	user, err := h.UsersServices.GetUserById(uint(id))
@@ -56,7 +56,7 @@ func (h *UsersHandler) CreateNewUser(c echo.Context) error {
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"status":  "error",
-			"message": "Invalid data",
+			"message": "invalid data",
 		})
 	}
 	if err := h.UsersServices.CreateNewUser(&user); err != nil {
@@ -67,6 +67,34 @@ func (h *UsersHandler) CreateNewUser(c echo.Context) error {
 	}
 	return c.JSON(http.StatusCreated, map[string]string{
 		"status":  "success",
-		"message": "User created successfully",
+		"message": "user created successfully",
+	})
+}
+
+// Editar un usuario por su id
+func (h *UsersHandler) UpdateUser(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error":   "Invalid id",
+			"message": err.Error(),
+		})
+	}
+	user := new(models.User)
+	if err := c.Bind(&user); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"stauts":  "error",
+			"message": "invalid data",
+		})
+	}
+	if err := h.UsersServices.UpdateUser(uint(id), user); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"message": "user updated successfully",
 	})
 }
