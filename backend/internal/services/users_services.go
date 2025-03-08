@@ -45,3 +45,8 @@ func (s *UsersServices) UpdateUser(id uint, user *models.User) error {
 	}
 	return s.UsersRepo.UpdateUser(id, user)
 }
+
+// Eliminar un usuario
+func (s *UsersServices) DeleteUser(id uint) error {
+	return s.UsersRepo.DeleteUser(id)
+}

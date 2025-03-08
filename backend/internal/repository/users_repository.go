@@ -43,3 +43,8 @@ func (r *UsersRepository) CreateUser(user *models.User) error {
 func (r *UsersRepository) UpdateUser(id uint, user *models.User) error {
 	return r.db.Model(&models.User{}).Where("id = ?", id).Updates(user).Error
 }
+
+// Eliminar un usuario
+func (r *UsersRepository) DeleteUser(id uint) error {
+	return r.db.Delete(&models.User{}, id).Error
+}
