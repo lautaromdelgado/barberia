@@ -29,3 +29,11 @@ func (s *UsersServices) GetUserById(id uint) (*models.User, error) {
 	}
 	return user, nil
 }
+
+// Crear un nuevo usuario
+func (s *UsersServices) CreateNewUser(user *models.User) error {
+	if user.Nombre == "" || user.Apellido == "" || user.DNI == "" {
+		return errors.New("missing required fields")
+	}
+	return s.UsersRepo.CreateUser(user)
+}

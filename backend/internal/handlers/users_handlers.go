@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"barberia/internal/models"
 	"barberia/internal/services"
 	"net/http"
 	"strconv"
@@ -30,6 +31,7 @@ func (h *UsersHandler) GetAllUsers(c echo.Context) error {
 	return c.JSON(http.StatusOK, users)
 }
 
+// Retornar un usuario por su id
 func (h *UsersHandler) GetUserById(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -46,4 +48,25 @@ func (h *UsersHandler) GetUserById(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, user)
+}
+
+// Crear un nuevo usuario
+func (h *UsersHandler) CreateNewUser(c echo.Context) error {
+	var user models.User
+	if err := c.Bind(&user); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "Invalid data",
+		})
+	}
+	if err := h.UsersServices.CreateNewUser(&user); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, map[string]string{
+		"status":  "success",
+		"message": "User created successfully",
+	})
 }

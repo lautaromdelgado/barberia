@@ -33,3 +33,8 @@ func (r *UsersRepository) GetById(id uint) (*models.User, error) {
 	}
 	return &user, nil
 }
+
+// Crear un nuevo usuario
+func (r *UsersRepository) CreateUser(user *models.User) error {
+	return r.db.Create(user).Error
+}
