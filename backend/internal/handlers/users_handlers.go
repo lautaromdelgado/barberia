@@ -98,3 +98,23 @@ func (h *UsersHandler) UpdateUser(c echo.Context) error {
 		"message": "user updated successfully",
 	})
 }
+
+func (u *UsersHandler) DeleteUser(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid id",
+		})
+	}
+	if err := u.UsersServices.DeleteUser(uint(id)); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"message": "user deleted successfully",
+	})
+}

@@ -24,4 +24,7 @@ func SetupRoutes(e *echo.Echo, db *gorm.DB) {
 
 	// Editar (PUT)
 	e.PUT("/update/user/:id", usersHandler.UpdateUser) // Editar un usuario por su id
+
+	// Eliminar (DELETE)
+	e.DELETE("/delete/user/:id", usersHandler.DeleteUser) // Eliminar un usuario
 }
