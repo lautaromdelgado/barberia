@@ -12,8 +12,8 @@ type Haircut struct {
 	PorcentajeComision float64   `json:"porcentaje_comision" gorm:"type:decimal(5,2);not null;default:0"` // % Comisión guardado para histórico
 	CreatedAt          time.Time `json:"created_at" gorm:"autoCreateTime"`
 
-	Barbershop Barbershop `json:"barbershop" gorm:"foreignKey:BarbershopID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	User       User       `json:"user" gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	Barbershop Barbershop `json:"barbershop" gorm:"foreignKey:BarbershopID;references:ID"`
+	User       User       `json:"user" gorm:"foreignKey:UserID;references:ID"`
 }
 
 func (h Haircut) TableName() string {
