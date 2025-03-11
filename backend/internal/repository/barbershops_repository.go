@@ -19,8 +19,17 @@ func NewBarbershopsRepository(db *gorm.DB) *Barbershops {
 // GetAll retorna todos los barbershops de la base de datos
 func (b *Barbershops) GetAll() ([]models.Barbershop, error) {
 	var barbershops []models.Barbershop
-	if err := b.db.Find(&barbershops).Error; err != nil {
+	if err := b.db.Preload("Owner").Find(&barbershops).Error; err != nil {
 		return nil, err
 	}
 	return barbershops, nil
+}
+
+// GetByID retorna un barbershop por su ID
+func (b *Barbershops) GetByID(id uint) (*models.Barbershop, error) {
+	var barbershop models.Barbershop
+	if err := b.db.Preload("Owner").First(&barbershop, id).Error; err != nil {
+		return nil, err
+	}
+	return &barbershop, nil
 }

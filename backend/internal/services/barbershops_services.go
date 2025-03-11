@@ -15,7 +15,12 @@ func NewBarberShopsServices(barberRepo *repository.Barbershops) *BarberShopsServ
 	return &BarberShopsServices{BarberRepo: barberRepo}
 }
 
-// GetAlalBarberShops retorna todas las barberías de la base de datos
+// GetAllBarberShops retorna todas las barberías de la base de datos
 func (b *BarberShopsServices) GetAllBarberShops() ([]models.Barbershop, error) {
 	return b.BarberRepo.GetAll()
+}
+
+// GetByIDBarberShop retorna una barbería por su ID
+func (b *BarberShopsServices) GetByIDBarbershops(id uint) (*models.Barbershop, error) {
+	return b.BarberRepo.GetByID(id)
 }

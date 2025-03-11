@@ -3,6 +3,7 @@ package handlers
 import (
 	"barberia/internal/services"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -24,4 +25,23 @@ func (b *BarberShopsHandler) GetAllBarberShops(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, barbershops)
+}
+
+// GetByIDBarberShop retorna una barbería por su ID
+func (b *BarberShopsHandler) GetByIDBarbershop(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid id",
+		})
+	}
+	barbershop, err := b.BarberShopServices.GetByIDBarbershops(uint(id))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": "barbershop not found",
+		})
+	}
+	return c.JSON(http.StatusOK, barbershop)
 }
