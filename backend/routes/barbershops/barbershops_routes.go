@@ -17,4 +17,7 @@ func SetUpRoutes(e *echo.Echo, db *gorm.DB) {
 	// Obtener (GET)
 	e.GET("/barbershops", barbershopHandler.GetAllBarberShops)    // Obtener todas las barberías
 	e.GET("/barbershop/:id", barbershopHandler.GetByIDBarbershop) // Obtener una barbería por su ID
+
+	// Crear (POST)
+	e.POST("/create/barbershop", barbershopHandler.CreateBarbershop) // Crear una nueva barbería
 }
