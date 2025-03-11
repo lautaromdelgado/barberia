@@ -2,6 +2,7 @@ package routes
 
 import (
 	barbershops_routes "barberia/routes/barbershops"
+	haircuts_routes "barberia/routes/haircuts"
 	users_routes "barberia/routes/users"
 
 	"github.com/labstack/echo/v4"
@@ -12,4 +13,5 @@ import (
 func SetupRoutes(e *echo.Echo, db *gorm.DB) {
 	users_routes.SetupRoutes(e, db)       // Rutas de los usuarios
 	barbershops_routes.SetUpRoutes(e, db) // Rutas de las barberías
+	haircuts_routes.SetUpRoutes(e, db)    // Rutas de los cortes
 }
