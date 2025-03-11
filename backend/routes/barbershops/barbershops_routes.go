@@ -20,4 +20,7 @@ func SetUpRoutes(e *echo.Echo, db *gorm.DB) {
 
 	// Crear (POST)
 	e.POST("/create/barbershop", barbershopHandler.CreateBarbershop) // Crear una nueva barbería
+
+	// Eliminar (DELETE)
+	e.DELETE("/delete/barbershop/:id", barbershopHandler.DeleteBarbershop) // Eliminar una barbería por su ID
 }
