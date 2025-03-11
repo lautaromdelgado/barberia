@@ -88,3 +88,31 @@ func (b *BarberShopsHandler) DeleteBarbershop(c echo.Context) error {
 		"message": "barbershop deleted successfully",
 	})
 }
+
+// BarbershopUpdate actualiza los datos de una barbería en la base de datos
+func (b *BarberShopsHandler) BarbershopUpdate(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid id",
+		})
+	}
+	var barbershop models.Barbershop
+	if err := c.Bind(&barbershop); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid data",
+		})
+	}
+	if err := b.BarberShopServices.UpdateBarbershop(&barbershop, uint(id)); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"messgae": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"message": "barbershop updated successfully",
+	})
+}

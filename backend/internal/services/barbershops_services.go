@@ -44,3 +44,11 @@ func (b *BarberShopsServices) DeleteBarbershop(id uint) error {
 	}
 	return nil
 }
+
+// UpdateBarbershop actualiza los datos de una barbería en la base de datos
+func (b *BarberShopsServices) UpdateBarbershop(barbershop *models.Barbershop, id uint) error {
+	if err := b.BarberRepo.Update(barbershop, id); err != nil {
+		return err
+	}
+	return nil
+}

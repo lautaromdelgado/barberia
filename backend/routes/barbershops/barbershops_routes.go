@@ -23,4 +23,7 @@ func SetUpRoutes(e *echo.Echo, db *gorm.DB) {
 
 	// Eliminar (DELETE)
 	e.DELETE("/delete/barbershop/:id", barbershopHandler.DeleteBarbershop) // Eliminar una barbería por su ID
+
+	// Editar (PUT)
+	e.PUT("/update/barbershop/:id", barbershopHandler.BarbershopUpdate) // Editar una barbería por su ID
 }

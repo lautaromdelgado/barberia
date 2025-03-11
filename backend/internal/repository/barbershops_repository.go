@@ -42,8 +42,17 @@ func (b *Barbershops) Create(barbershop *models.Barbershop) error {
 	return nil
 }
 
+// Eliminar una barbería
 func (b *Barbershops) Detele(id uint) error {
 	if err := b.db.Delete(&models.Barbershop{}, id).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// Actualizar datos de una barbería
+func (b *Barbershops) Update(barbershop *models.Barbershop, id uint) error {
+	if err := b.db.Model(&models.Barbershop{}).Where("id = ?", id).Updates(barbershop).Error; err != nil {
 		return err
 	}
 	return nil
