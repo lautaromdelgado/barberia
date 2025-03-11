@@ -33,3 +33,11 @@ func (b *Barbershops) GetByID(id uint) (*models.Barbershop, error) {
 	}
 	return &barbershop, nil
 }
+
+// Crear una nueva barbería
+func (b *Barbershops) Create(barbershop *models.Barbershop) error {
+	if err := b.db.Create(barbershop).Error; err != nil {
+		return err
+	}
+	return nil
+}

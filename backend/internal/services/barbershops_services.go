@@ -3,6 +3,7 @@ package services
 import (
 	"barberia/internal/models"
 	"barberia/internal/repository"
+	"errors"
 )
 
 // BarberShopsService es un servicio para los repositorios de BarberShops
@@ -23,4 +24,15 @@ func (b *BarberShopsServices) GetAllBarberShops() ([]models.Barbershop, error) {
 // GetByIDBarberShop retorna una barbería por su ID
 func (b *BarberShopsServices) GetByIDBarbershops(id uint) (*models.Barbershop, error) {
 	return b.BarberRepo.GetByID(id)
+}
+
+// Crear una barbería en la base de datos
+func (b *BarberShopsServices) CreateBarbershop(barbershop *models.Barbershop) error {
+	if barbershop.Nombre == "" || barbershop.Direccion == "" || barbershop.OwnerID == 0 {
+		return errors.New("some fields are empty")
+	}
+	if err := b.BarberRepo.Create(barbershop); err != nil {
+		return err
+	}
+	return nil
 }

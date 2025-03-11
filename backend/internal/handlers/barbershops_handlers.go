@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"barberia/internal/models"
 	"barberia/internal/services"
 	"net/http"
 	"strconv"
@@ -44,4 +45,25 @@ func (b *BarberShopsHandler) GetByIDBarbershop(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, barbershop)
+}
+
+// CreateBarbershop crea una nueva barbería en la base de datos
+func (b *BarberShopsHandler) CreateBarbershop(c echo.Context) error {
+	var barbershop models.Barbershop
+	if err := c.Bind(&barbershop); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid data",
+		})
+	}
+	if err := b.BarberShopServices.CreateBarbershop(&barbershop); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"message": "barbershop created successfully",
+	})
 }
