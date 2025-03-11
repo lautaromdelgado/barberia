@@ -36,3 +36,11 @@ func (b *BarberShopsServices) CreateBarbershop(barbershop *models.Barbershop) er
 	}
 	return nil
 }
+
+// DeteleBarbershop elimina una barbería de la base de datos
+func (b *BarberShopsServices) DeleteBarbershop(id uint) error {
+	if err := b.BarberRepo.Detele(id); err != nil {
+		return err
+	}
+	return nil
+}

@@ -67,3 +67,24 @@ func (b *BarberShopsHandler) CreateBarbershop(c echo.Context) error {
 		"message": "barbershop created successfully",
 	})
 }
+
+// DeleteBarbershop eliminar una barbería de la base de datos
+func (b *BarberShopsHandler) DeleteBarbershop(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid id",
+		})
+	}
+	if err := b.BarberShopServices.DeleteBarbershop(uint(id)); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": "barbershop not found",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"message": "barbershop deleted successfully",
+	})
+}

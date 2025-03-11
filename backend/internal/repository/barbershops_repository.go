@@ -41,3 +41,10 @@ func (b *Barbershops) Create(barbershop *models.Barbershop) error {
 	}
 	return nil
 }
+
+func (b *Barbershops) Detele(id uint) error {
+	if err := b.db.Delete(&models.Barbershop{}, id).Error; err != nil {
+		return err
+	}
+	return nil
+}
