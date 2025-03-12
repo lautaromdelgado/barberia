@@ -108,7 +108,7 @@ func (b *BarberShopsHandler) BarbershopUpdate(c echo.Context) error {
 	if err := b.BarberShopServices.UpdateBarbershop(&barbershop, uint(id)); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{
 			"status":  "error",
-			"messgae": err.Error(),
+			"message": err.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]string{
