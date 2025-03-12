@@ -18,4 +18,7 @@ func SetUpRoutes(e *echo.Echo, db *gorm.DB) {
 	// Obtener (GET)
 	e.GET("/haircuts", haircutsHandlers.GetAllHaircuts)     // Obtener todos los cortes
 	e.GET("/haircuts/:id", haircutsHandlers.GetHaircutByID) // Obtener un corte por su ID
+
+	// Eliminar (DELETE)
+	e.DELETE("/delete/haircuts/:id", haircutsHandlers.DeleteHaircut) // Eliminar un corte por su ID
 }
