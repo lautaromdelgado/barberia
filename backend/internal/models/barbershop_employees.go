@@ -10,8 +10,8 @@ type BarbershopEmployee struct {
 	Base_Salary                 float64   `json:"salario_base" gorm:"type:decimal(10,2);not null;default:0"` // Salario base
 	Created_At                  time.Time `json:"created_at" gorm:"autoCreateTime"`
 
-	Barbershop Barbershop `json:"barbershop" gorm:"foreignKey:BarbershopID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	User       User       `json:"user" gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	Barbershop *Barbershop `json:"barbershop,omitempty" gorm:"foreignKey:Barbershop_ID;references:ID"`
+	User       User        `json:"user" gorm:"foreignKey:User_ID;references:ID"`
 }
 
 func (b BarbershopEmployee) TableName() string {
