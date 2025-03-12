@@ -49,3 +49,11 @@ func (h *HaircutsRepository) Update(haircut *models.Haircut, id uint) error {
 	}
 	return nil
 }
+
+// Crear un corte
+func (h *HaircutsRepository) Create(haircut *models.Haircut) error {
+	if err := h.db.Create(haircut).Error; err != nil {
+		return err
+	}
+	return nil
+}

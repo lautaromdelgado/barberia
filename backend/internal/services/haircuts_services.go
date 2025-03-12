@@ -36,7 +36,15 @@ func (h *HaircutsServices) DeleteHaircut(id uint) error {
 // Actualizar un corte
 func (h *HaircutsServices) UpdateHaircut(haircut *models.Haircut, id uint) error {
 	if haircut.BarbershopID == 0 && haircut.UserID == 0 && haircut.MontoTotal < 0 && haircut.ComisionAplicada < 0 && haircut.PorcentajeComision < 0 {
-		return errors.New("no se ha enviado ningún campo para actualizar")
+		return errors.New("no fields have been submitted for update")
 	}
 	return h.HaircutsRepository.Update(haircut, id)
+}
+
+// Crear un corte en la base de datos
+func (h *HaircutsServices) CreateHaircut(haircut *models.Haircut) error {
+	if haircut.BarbershopID == 0 || haircut.UserID == 0 || haircut.MontoTotal < 0 || haircut.ComisionAplicada < 0 || haircut.PorcentajeComision < 0 {
+		return errors.New("required fields are missing")
+	}
+	return h.HaircutsRepository.Create(haircut)
 }

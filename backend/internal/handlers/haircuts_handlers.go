@@ -101,3 +101,24 @@ func (h *HaircutsHandlers) UpdateHaircut(c echo.Context) error {
 		"message": "haircut updated successfully",
 	})
 }
+
+// Crear un corte en la base de datos
+func (h *HaircutsHandlers) CreateHaircut(c echo.Context) error {
+	var haircut models.Haircut
+	if err := c.Bind(&haircut); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	if err := h.HaircutsServices.CreateHaircut(&haircut); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, map[string]string{
+		"status":  "success",
+		"message": "haircut created successfully",
+	})
+}
