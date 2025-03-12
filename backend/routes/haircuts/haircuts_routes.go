@@ -24,4 +24,7 @@ func SetUpRoutes(e *echo.Echo, db *gorm.DB) {
 
 	// Actualizar (PUT)
 	e.PUT("/update/haircuts/:id", haircutsHandlers.UpdateHaircut) // Actualizar un corte
+
+	// Crear (POST)
+	e.POST("/create/haircuts", haircutsHandlers.CreateHaircut) // Crear un corte
 }
