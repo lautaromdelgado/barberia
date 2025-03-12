@@ -24,3 +24,12 @@ func (h *HaircutsRepository) GetAll() ([]models.Haircut, error) {
 	}
 	return haircuts, nil
 }
+
+// GetByID retorna un corte por su ID
+func (h *HaircutsRepository) GetByID(id uint) (*models.Haircut, error) {
+	var haircut models.Haircut
+	if err := h.db.Preload("Barbershop").Preload("Barbershop.Owner").Preload("User").First(&haircut, id).Error; err != nil {
+		return nil, err
+	}
+	return &haircut, nil
+}

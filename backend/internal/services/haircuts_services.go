@@ -21,3 +21,8 @@ func NewHaircutsServices(haircutsRepository *repository.HaircutsRepository) *Hai
 func (h *HaircutsServices) GetAllHaircuts() ([]models.Haircut, error) {
 	return h.HaircutsRepository.GetAll()
 }
+
+// GetHaircutByID retorna un corte por su ID
+func (h *HaircutsServices) GetHaircutByID(id uint) (*models.Haircut, error) {
+	return h.HaircutsRepository.GetByID(id)
+}
