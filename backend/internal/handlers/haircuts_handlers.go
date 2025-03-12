@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"barberia/internal/models"
 	"barberia/internal/services"
 	"net/http"
 
@@ -70,5 +71,33 @@ func (h *HaircutsHandlers) DeleteHaircut(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{
 		"status":  "success",
 		"message": "haircut deleted",
+	})
+}
+
+// Actualizar un corte
+func (h *HaircutsHandlers) UpdateHaircut(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid id",
+		})
+	}
+	var haircut models.Haircut
+	if err := c.Bind(&haircut); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	if err := h.HaircutsServices.UpdateHaircut(&haircut, uint(id)); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"message": "haircut updated successfully",
 	})
 }

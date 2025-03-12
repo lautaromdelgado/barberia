@@ -41,3 +41,11 @@ func (h *HaircutsRepository) Delete(id uint) error {
 	}
 	return nil
 }
+
+// Editar un corte
+func (h *HaircutsRepository) Update(haircut *models.Haircut, id uint) error {
+	if err := h.db.Model(&models.Haircut{}).Where("id = ?", id).Updates(haircut).Error; err != nil {
+		return err
+	}
+	return nil
+}
