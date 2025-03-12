@@ -33,3 +33,11 @@ func (h *HaircutsRepository) GetByID(id uint) (*models.Haircut, error) {
 	}
 	return &haircut, nil
 }
+
+// Eliminar un corte
+func (h *HaircutsRepository) Delete(id uint) error {
+	if err := h.db.Delete(&models.Haircut{}, id).Error; err != nil {
+		return err
+	}
+	return nil
+}

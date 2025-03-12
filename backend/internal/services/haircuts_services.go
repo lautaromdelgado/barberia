@@ -26,3 +26,8 @@ func (h *HaircutsServices) GetAllHaircuts() ([]models.Haircut, error) {
 func (h *HaircutsServices) GetHaircutByID(id uint) (*models.Haircut, error) {
 	return h.HaircutsRepository.GetByID(id)
 }
+
+// Eliminar un corte por su ID
+func (h *HaircutsServices) DeleteHaircut(id uint) error {
+	return h.HaircutsRepository.Delete(id)
+}

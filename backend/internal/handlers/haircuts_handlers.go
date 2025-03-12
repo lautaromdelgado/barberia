@@ -51,3 +51,24 @@ func (h *HaircutsHandlers) GetHaircutByID(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, haircuts)
 }
+
+// Eliminar un corte por su ID
+func (h *HaircutsHandlers) DeleteHaircut(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid id",
+		})
+	}
+	if err := h.HaircutsServices.DeleteHaircut(uint(id)); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"message": "haircut deleted",
+	})
+}
