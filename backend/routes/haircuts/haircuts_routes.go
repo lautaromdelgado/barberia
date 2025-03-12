@@ -16,5 +16,6 @@ func SetUpRoutes(e *echo.Echo, db *gorm.DB) {
 	haircutsHandlers := handlers.NewHaircutsHandlers(haircutsServices) // Crear manejador de cortes
 
 	// Obtener (GET)
-	e.GET("/haircuts", haircutsHandlers.GetAllHaircuts) // Obtener todos los cortes
+	e.GET("/haircuts", haircutsHandlers.GetAllHaircuts)     // Obtener todos los cortes
+	e.GET("/haircuts/:id", haircutsHandlers.GetHaircutByID) // Obtener un corte por su ID
 }
