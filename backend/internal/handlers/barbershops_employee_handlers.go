@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"barberia/internal/models"
 	"barberia/internal/services"
 
 	"net/http"
@@ -71,5 +72,26 @@ func (b *BarbershopEmployeeHandler) DeleteEmployee(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{
 		"status":  "success",
 		"message": "employee deleted successfully",
+	})
+}
+
+// Crear un empleado en la base de datos
+func (b *BarbershopEmployeeHandler) CreateEmployeee(c echo.Context) error {
+	var employee models.BarbershopEmployee
+	if err := c.Bind(&employee); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid data",
+		})
+	}
+	if err := b.BarbershopEmployeeService.CreateEmployee(&employee); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, map[string]string{
+		"status":  "success",
+		"message": "employee created successfully",
 	})
 }

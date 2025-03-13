@@ -43,3 +43,11 @@ func (b *BarbershopEmployeeRepository) Delete(id uint) error {
 	}
 	return nil
 }
+
+// Crear un nuevo empleado
+func (b *BarbershopEmployeeRepository) Create(employee *models.BarbershopEmployee) error {
+	if err := b.db.Create(employee).Error; err != nil {
+		return err
+	}
+	return nil
+}
