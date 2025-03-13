@@ -52,3 +52,24 @@ func (b *BarbershopEmployeeHandler) GetAllEmployees(c echo.Context) error {
 		"employees":        employees,
 	})
 }
+
+// Borrar un empleado de la base de datos
+func (b *BarbershopEmployeeHandler) DeleteEmployee(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid id",
+		})
+	}
+	if err := b.BarbershopEmployeeService.DeleteEmployee(uint(id)); err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"message": "employee deleted successfully",
+	})
+}

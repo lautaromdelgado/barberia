@@ -35,3 +35,11 @@ func (b *BarbershopEmployeeRepository) GetAll() ([]models.BarbershopEmployee, er
 	}
 	return barbershopEmployees, nil
 }
+
+// Borrar un empleado de la base de datos
+func (b *BarbershopEmployeeRepository) Delete(id uint) error {
+	if err := b.db.Delete(&models.BarbershopEmployee{}, id).Error; err != nil {
+		return err
+	}
+	return nil
+}
