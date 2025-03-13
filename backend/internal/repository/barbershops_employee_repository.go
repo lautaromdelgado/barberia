@@ -26,3 +26,12 @@ func (b *BarbershopEmployeeRepository) GetByID(id uint) (*models.BarbershopEmplo
 	}
 	return &barbershopEmployee, nil
 }
+
+// Obtener todos empleados de la base de datos
+func (b *BarbershopEmployeeRepository) GetAll() ([]models.BarbershopEmployee, error) {
+	var barbershopEmployees []models.BarbershopEmployee
+	if err := b.db.Preload("User").Find(&barbershopEmployees).Error; err != nil {
+		return nil, err
+	}
+	return barbershopEmployees, nil
+}

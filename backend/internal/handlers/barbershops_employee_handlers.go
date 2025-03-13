@@ -37,3 +37,18 @@ func (b *BarbershopEmployeeHandler) GetEmployeeByID(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, employee)
 }
+
+// Obtener todos los empleados de la base de datos
+func (b *BarbershopEmployeeHandler) GetAllEmployees(c echo.Context) error {
+	employees, totalEmployees, err := b.BarbershopEmployeeService.GetAllEmployees()
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"total_employees:": totalEmployees,
+		"employees":        employees,
+	})
+}
