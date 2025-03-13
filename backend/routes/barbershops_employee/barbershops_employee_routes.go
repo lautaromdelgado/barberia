@@ -10,18 +10,19 @@ import (
 )
 
 func SetUpRoute(e *echo.Echo, db *gorm.DB) {
-	barbershopEmployeeRepo := repository.NewBarbershopEmployeeRepository(db)
-	barbershopEmployeeService := services.NewBarbershopEmployeeService(barbershopEmployeeRepo)
-	barbershopEmployeeHandler := handlers.NewBarbershopEmployeeHandler(barbershopEmployeeService)
+	barbershopEmployeeRepo := repository.NewBarbershopEmployeeRepository(db)                      // Crear un nuevo repositorio de empleados de barberías
+	barbershopEmployeeService := services.NewBarbershopEmployeeService(barbershopEmployeeRepo)    // Crear un nuevo servicio de empleados de barberías
+	barbershopEmployeeHandler := handlers.NewBarbershopEmployeeHandler(barbershopEmployeeService) // Crear un nuevo manejador de empleados de barberías
 
 	// Obtener (GET)
-	e.GET("/employees/:id", barbershopEmployeeHandler.GetEmployeeByID)
-	e.GET("/employees", barbershopEmployeeHandler.GetAllEmployees)
+	e.GET("/employees/:id", barbershopEmployeeHandler.GetEmployeeByID) // Obtener datos de un empleado
+	e.GET("/employees", barbershopEmployeeHandler.GetAllEmployees)     // Obtener todos los empleados registrados en la base de datos
 
 	// Crear (POST)
+	e.POST("/create/employees", barbershopEmployeeHandler.CreateEmployeee) // Crear un nuevo empleado
 
 	// Actualizar (PUT)
 
 	// Eliminar (DELETE)
-	e.DELETE("/delete/employees/:id", barbershopEmployeeHandler.DeleteEmployee)
+	e.DELETE("/delete/employees/:id", barbershopEmployeeHandler.DeleteEmployee) // Borrar un empleado de la base de datos
 }
