@@ -22,6 +22,7 @@ func SetUpRoute(e *echo.Echo, db *gorm.DB) {
 	e.POST("/create/employees", barbershopEmployeeHandler.CreateEmployeee) // Crear un nuevo empleado
 
 	// Actualizar (PUT)
+	e.PUT("/update/employees/:id", barbershopEmployeeHandler.UpdateEmployee) // Actualizar un empleado de la base de datos
 
 	// Eliminar (DELETE)
 	e.DELETE("/delete/employees/:id", barbershopEmployeeHandler.DeleteEmployee) // Borrar un empleado de la base de datos
