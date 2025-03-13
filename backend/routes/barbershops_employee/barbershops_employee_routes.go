@@ -23,4 +23,5 @@ func SetUpRoute(e *echo.Echo, db *gorm.DB) {
 	// Actualizar (PUT)
 
 	// Eliminar (DELETE)
+	e.DELETE("/delete/employees/:id", barbershopEmployeeHandler.DeleteEmployee)
 }
