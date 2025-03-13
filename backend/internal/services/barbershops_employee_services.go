@@ -42,3 +42,11 @@ func (b *BarbershopEmployeeService) CreateEmployee(employee *models.BarbershopEm
 	}
 	return b.BarbershopEmployeeRepo.Create(employee)
 }
+
+// Actualizar un empleado de la base de datos
+func (b *BarbershopEmployeeService) UpdateEmployee(employee *models.BarbershopEmployee, id uint) error {
+	if employee.Barbershop_ID == 0 && employee.User_ID == 0 && employee.Comision_Porcentaje_Default < 0 && employee.Base_Salary < 0 {
+		return errors.New("all fields are null or zero")
+	}
+	return b.BarbershopEmployeeRepo.Update(employee, id)
+}

@@ -51,3 +51,11 @@ func (b *BarbershopEmployeeRepository) Create(employee *models.BarbershopEmploye
 	}
 	return nil
 }
+
+// Actualizar un empleado de la base de datos
+func (b *BarbershopEmployeeRepository) Update(employee *models.BarbershopEmployee, id uint) error {
+	if err := b.db.Model(&models.BarbershopEmployee{}).Where("id = ?", id).Updates(employee).Error; err != nil {
+		return err
+	}
+	return nil
+}

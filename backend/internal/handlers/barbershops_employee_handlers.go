@@ -95,3 +95,31 @@ func (b *BarbershopEmployeeHandler) CreateEmployeee(c echo.Context) error {
 		"message": "employee created successfully",
 	})
 }
+
+// Actuaalizar un empleado
+func (b *BarbershopEmployeeHandler) UpdateEmployee(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid id",
+		})
+	}
+	var employee models.BarbershopEmployee
+	if err := c.Bind(&employee); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid data",
+		})
+	}
+	if err := b.BarbershopEmployeeService.UpdateEmployee(&employee, uint(id)); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, map[string]string{
+		"status":  "success",
+		"message": "employee updated successfully",
+	})
+}
