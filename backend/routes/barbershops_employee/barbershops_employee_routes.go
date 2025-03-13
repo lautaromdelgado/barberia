@@ -16,6 +16,7 @@ func SetUpRoute(e *echo.Echo, db *gorm.DB) {
 
 	// Obtener (GET)
 	e.GET("/employees/:id", barbershopEmployeeHandler.GetEmployeeByID)
+	e.GET("/employees", barbershopEmployeeHandler.GetAllEmployees)
 
 	// Crear (POST)
 
