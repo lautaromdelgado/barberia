@@ -5,9 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type Config struct {
@@ -21,11 +24,29 @@ func (c *Config) OpenConnection() error {
 		log.Printf("Error getting DSN: %v", err)
 		return errors.New("error getting dsn")
 	}
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	// Configuración de logger
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // Salida en consola
+		logger.Config{
+			SlowThreshold:             time.Second, // Marca consultas lentas (>1s)
+			LogLevel:                  logger.Info, // Nivel de logs (Info, Warn, Error)
+			IgnoreRecordNotFoundError: true,        // Ignorar "record not found"
+			Colorful:                  true,        // Logs en color
+		},
+	)
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: newLogger,
+	})
 	if err != nil {
 		log.Printf("Detailed connection error: %v", err)
 		return fmt.Errorf("error opening connection: %v", err)
 	}
+
+	// Debug mode
+	db = db.Debug()
+
 	c.Connection = db
 	return nil
 }
