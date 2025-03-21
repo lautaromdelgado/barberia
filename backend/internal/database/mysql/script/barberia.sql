@@ -13,7 +13,7 @@ CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(50) NOT NULL,
   apellido VARCHAR(50) NOT NULL,
-  dni VARCHAR(20) NOT NULL UNIQUE,
+  dni VARCHAR(255) NOT NULL UNIQUE,
   correo VARCHAR(100) UNIQUE, -- Ahora es opcional (puede ser NULL)
   rol ENUM('owner', 'employee') NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
