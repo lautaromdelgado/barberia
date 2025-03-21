@@ -3,6 +3,7 @@ package services
 import (
 	"barberia/internal/models"
 	"barberia/internal/repository"
+	auth_services "barberia/internal/services/auth"
 	"barberia/internal/utils"
 	"errors"
 )
@@ -55,4 +56,20 @@ func (s *UsersServices) UpdateUser(id uint, user *models.User) error {
 // Eliminar un usuario
 func (s *UsersServices) DeleteUser(id uint) error {
 	return s.UsersRepo.DeleteUser(id)
+}
+
+// Retornar un usuario por su correo y dni
+func (s *UsersServices) GetUserByEmailAndDNI(email, dni string) (string, error) {
+	user, err := s.UsersRepo.GetUserByEmail(email)
+	if err != nil {
+		return "", errors.New("user not found")
+	}
+	if err := utils.CheckPasswordHash(user.DNI, dni); err != nil {
+		return "", errors.New("invalid password")
+	}
+	token, err := auth_services.NewJWTService().GenerateToken(user.ID, user.Correo)
+	if err != nil {
+		return "", errors.New("error generating token")
+	}
+	return token, nil
 }
