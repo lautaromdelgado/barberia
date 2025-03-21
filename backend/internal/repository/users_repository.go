@@ -48,3 +48,12 @@ func (r *UsersRepository) UpdateUser(id uint, user *models.User) error {
 func (r *UsersRepository) DeleteUser(id uint) error {
 	return r.db.Delete(&models.User{}, id).Error
 }
+
+// Retornar un usuario por su correo y dni
+func (r *UsersRepository) GetUserByEmail(email string) (*models.User, error) {
+	var user models.User
+	if err := r.db.Where("correo = ?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
