@@ -3,6 +3,7 @@ package services
 import (
 	"barberia/internal/models"
 	"barberia/internal/repository"
+	"barberia/internal/utils"
 	"errors"
 )
 
@@ -35,6 +36,11 @@ func (s *UsersServices) CreateNewUser(user *models.User) error {
 	if user.Nombre == "" || user.Apellido == "" || user.DNI == "" {
 		return errors.New("missing required fields")
 	}
+	hashedPass, err := utils.HashedPassword(user.DNI) // Pasamos el DNI como contraseña para hashear
+	if err != nil {
+		return errors.New("error hashing password")
+	}
+	user.DNI = hashedPass // Seteamos el DNI(hasheado como contraseña) al modelo
 	return s.UsersRepo.CreateUser(user)
 }
 
