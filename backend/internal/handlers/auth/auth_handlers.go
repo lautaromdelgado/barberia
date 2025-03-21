@@ -50,3 +50,30 @@ func (a *AuthHandlers) Register(c echo.Context) error {
 		"message": "user created",
 	})
 }
+
+// Login es un manejador que se encarga de loguear un usuario
+func (a *AuthHandlers) Login(c echo.Context) error {
+	type input struct {
+		Correo string `json:"correo"`
+		DNI    string `json:"dni"`
+	}
+	var inputData input
+	if err := c.Bind(&inputData); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": "invalid data: " + err.Error(),
+		})
+	}
+	token, err := a.UsersServices.GetUserByEmailAndDNI(inputData.Correo, inputData.DNI)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": "error logging in: " + err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"token":   token,
+		"message": "logged in",
+	})
+}
