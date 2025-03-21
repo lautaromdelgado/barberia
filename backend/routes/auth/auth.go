@@ -22,4 +22,5 @@ func SetUpRoutes(e *echo.Echo, db *gorm.DB) {
 
 	// Rutas de autenticación
 	e.POST("/register", authHandlers.Register) // Registrar un usuario
+	e.POST("/login", authHandlers.Login)       // Loguear un usuario
 }
