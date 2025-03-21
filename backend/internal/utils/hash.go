@@ -10,3 +10,8 @@ func HashedPassword(password string) (string, error) {
 	}
 	return string(hashedPassword), nil
 }
+
+// CheckPasswordHash compara una contraseña hasheada con una contraseña sin hashear
+func CheckPasswordHash(hashPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashPassword), []byte(password))
+}
