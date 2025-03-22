@@ -37,9 +37,12 @@ func (j *JWTService) GenerateToken(userID uint, userCorreo string) (string, erro
 // ValidateToken valida un token JWT
 func (j *JWTService) ValidateToken(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
 		return []byte(j.secretKey), nil
 	})
-	if err != nil {
+	if err != nil || !token.Valid {
 		return nil, errors.New("invalid token")
 	}
 	return token, nil
