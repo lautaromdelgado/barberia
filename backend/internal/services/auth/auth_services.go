@@ -30,7 +30,7 @@ func (j *JWTService) GenerateToken(id uint, nombre, apellido, correo, rol string
 		"name":     nombre,
 		"apellido": apellido,
 		"correo":   correo,
-		"role":     rol,
+		"rol":      rol,
 		"exp":      time.Now().Add(time.Hour * 72).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
