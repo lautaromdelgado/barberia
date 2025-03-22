@@ -66,7 +66,7 @@ func (a *AuthHandlers) Login(c echo.Context) error {
 	}
 	token, err := a.UsersServices.GetUserByEmailAndDNI(inputData.Correo, inputData.DNI)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusUnauthorized, map[string]string{
 			"status":  "error",
 			"message": "error logging in: " + err.Error(),
 		})
