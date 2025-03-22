@@ -37,7 +37,7 @@ func (a *AuthHandlers) Register(c echo.Context) error {
 			"message": "error registering a user",
 		})
 	}
-	token, err := a.JWTService.GenerateToken(user.ID, user.Correo)
+	token, err := a.JWTService.GenerateToken(user.ID, user.Nombre, user.Apellido, user.Correo, user.Rol)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{
 			"status":  "error",

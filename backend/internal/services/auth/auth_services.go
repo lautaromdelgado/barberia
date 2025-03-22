@@ -24,11 +24,14 @@ func NewJWTService() *JWTService {
 }
 
 // GenerateToken genera un token JWT
-func (j *JWTService) GenerateToken(userID uint, userCorreo string) (string, error) {
+func (j *JWTService) GenerateToken(id uint, nombre, apellido, correo, rol string) (string, error) {
 	claims := jwt.MapClaims{
-		"user_id": userID,
-		"correo":  userCorreo,
-		"exp":     time.Now().Add(time.Hour * 72).Unix(),
+		"user_id":  id,
+		"name":     nombre,
+		"apellido": apellido,
+		"correo":   correo,
+		"role":     rol,
+		"exp":      time.Now().Add(time.Hour * 72).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(j.secretKey))

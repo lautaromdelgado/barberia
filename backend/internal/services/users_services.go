@@ -67,7 +67,7 @@ func (s *UsersServices) GetUserByEmailAndDNI(email, dni string) (string, error) 
 	if err := utils.CheckPasswordHash(user.DNI, dni); err != nil {
 		return "", errors.New("invalid password")
 	}
-	token, err := auth_services.NewJWTService().GenerateToken(user.ID, user.Correo)
+	token, err := auth_services.NewJWTService().GenerateToken(user.ID, user.Nombre, user.Apellido, user.Correo, user.Rol)
 	if err != nil {
 		return "", errors.New("error generating token")
 	}
