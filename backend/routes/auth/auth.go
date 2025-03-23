@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetUpRoutes(e *echo.Echo, db *gorm.DB) {
+func SetUpRoutes(e *echo.Echo, db *gorm.DB, public *echo.Group) {
 	// Uso de la clase UsersRepository (Para crear el usuario)
 	usersRepo := repository.NewUsersRepository(db)
 	// Uso de la clase UsersServices (Para la lógica de negocio en el registro de usuario)
@@ -21,6 +21,6 @@ func SetUpRoutes(e *echo.Echo, db *gorm.DB) {
 	authHandlers := handlers.NewAuthHandlers(jwtServices, usersService)
 
 	// Rutas de autenticación
-	e.POST("/register", authHandlers.Register) // Registrar un usuario
-	e.POST("/login", authHandlers.Login)       // Loguear un usuario
+	public.POST("/register", authHandlers.Register) // Registrar un usuario
+	public.POST("/login", authHandlers.Login)       // Loguear un usuario
 }
