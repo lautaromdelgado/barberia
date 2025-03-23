@@ -2,7 +2,7 @@ package main
 
 import (
 	"barberia/internal/database/mysql"
-	"barberia/internal/middleware"
+	LoggerMiddleware "barberia/internal/middleware/logger"
 	"barberia/routes"
 	"log"
 
@@ -14,7 +14,7 @@ func main() {
 	e := echo.New()
 
 	// Aplicar middleware de logs a todas las rutas (middlewar global)
-	e.Use(middleware.LoggerMiddleware)
+	e.Use(LoggerMiddleware.LoggerMiddleware)
 
 	database := new(mysql.Config)
 	db, err := database.GetDB()
