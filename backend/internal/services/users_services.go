@@ -50,6 +50,9 @@ func (s *UsersServices) UpdateUser(id uint, user *models.User) error {
 	if user.Nombre != "" && user.Apellido != "" && user.DNI != "" {
 		return errors.New("at least one field is required")
 	}
+	if !user.Verified {
+		return errors.New("invalid verified field")
+	}
 	return s.UsersRepo.UpdateUser(id, user)
 }
 
