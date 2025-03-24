@@ -16,6 +16,7 @@ CREATE TABLE users (
   dni VARCHAR(255) NOT NULL UNIQUE,
   correo VARCHAR(100) UNIQUE, -- Ahora es opcional (puede ser NULL)
   rol ENUM('owner', 'employee') NOT NULL,
+  verified TINYINT NOT NULL DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
