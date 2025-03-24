@@ -63,3 +63,15 @@ CREATE TABLE haircuts (
   INDEX idx_realizado_en (realizado_en),
   INDEX idx_barbershop_realizado (barbershop_id, realizado_en)
 ) ENGINE=InnoDB;
+
+-- Crear tabla para manejar los tokens de verificación de cuenta y recuperación de contraseña
+CREATE TABLE user_tokens (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  token VARCHAR(255) NOT NULL UNIQUE,
+  type ENUM('verification', 'password_reset') NOT NULL, -- Indica si es para verificación o recuperación
+  expires_at DATETIME NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_user_tokens_user FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
