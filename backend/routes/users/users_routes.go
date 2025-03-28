@@ -23,7 +23,8 @@ func SetupRoutes(e *echo.Echo, db *gorm.DB, private *echo.Group) {
 	private.POST("/create/user", usersHandler.CreateNewUser) // Crear un nuevo usuario
 
 	// Editar (PUT)
-	private.PUT("/update/user/:id", usersHandler.UpdateUser) // Editar un usuario por su id
+	private.PUT("/update/user/:id", usersHandler.UpdateUser)              // Editar un usuario por su id
+	private.PUT("/user/:id/change-password", usersHandler.ChangePassword) // Cambiar la contraseña de un usuario
 
 	// Eliminar (DELETE)
 	private.DELETE("/delete/user/:id", usersHandler.DeleteUser) // Eliminar un usuario
