@@ -1,6 +1,7 @@
 package services
 
 import (
+	"barberia/internal/dto"
 	"barberia/internal/models"
 	"barberia/internal/repository"
 	auth_services "barberia/internal/services/auth"
@@ -75,4 +76,39 @@ func (s *UsersServices) GetUserByEmailAndDNI(email, dni string) (string, error) 
 		return "", errors.New("error generating token")
 	}
 	return token, nil
+}
+
+// Cambiar la contraseña de un usuario
+func (s *UsersServices) ChangePassword(id uint, newPassword *dto.ChangePassword) error {
+	// Corroboramos que la contraseña en ningún caso este vacía|
+	if newPassword.CurrentPassword == "" || newPassword.NewPassword == "" || newPassword.ConfirmPassword == "" {
+		return errors.New("missing required fields")
+	}
+	// Si la contraseña nueva y la confirmación no son iguales, retornamos un error
+	if newPassword.NewPassword != newPassword.ConfirmPassword {
+		return errors.New("passwords do not match")
+	}
+	// Obtener el usuario por id para comparar las contraseñas
+	user, err := s.UsersRepo.GetById(id)
+	if err != nil {
+		return errors.New("user not found")
+	}
+	// Verificamos que la nueva contraseña y la confirmación sean iguales
+	err = utils.CheckPasswordHash(user.DNI, newPassword.CurrentPassword)
+	if err != nil {
+		return errors.New("invalid current password")
+	}
+	// Verificamos que la nueva contraseña no sea igual a la actual
+	if newPassword.CurrentPassword == newPassword.NewPassword {
+		return errors.New("new password cannot be the same as current password")
+	}
+	// Hasheo la contraseña nueva
+	hashedPassword, err := utils.HashedPassword(newPassword.NewPassword)
+	if err != nil {
+		return errors.New("error hashing password")
+	}
+	if err := s.UsersRepo.ChangePassword(id, hashedPassword); err != nil {
+		return errors.New("error changing password")
+	}
+	return nil
 }

@@ -57,3 +57,8 @@ func (r *UsersRepository) GetUserByEmail(email string) (*models.User, error) {
 	}
 	return &user, nil
 }
+
+// Cambiar contraseña de un usuario
+func (r *UsersRepository) ChangePassword(id uint, newPassword string) error {
+	return r.db.Model(&models.User{}).Where("id = ?", id).Update("dni", newPassword).Error
+}

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"barberia/internal/dto"
 	"barberia/internal/models"
 	"barberia/internal/services"
 	"net/http"
@@ -99,6 +100,7 @@ func (h *UsersHandler) UpdateUser(c echo.Context) error {
 	})
 }
 
+// DeleteUser elimina un usuario por su id
 func (u *UsersHandler) DeleteUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -116,5 +118,33 @@ func (u *UsersHandler) DeleteUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{
 		"status":  "success",
 		"message": "user deleted successfully",
+	})
+}
+
+// Cambiar la contraseña de un usuario
+func (h *UsersHandler) ChangePassword(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid id",
+		})
+	}
+	passwords := new(dto.ChangePassword)
+	if err := c.Bind(&passwords); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"status":  "error",
+			"message": "invalid data",
+		})
+	}
+	if err := h.UsersServices.ChangePassword(uint(id), passwords); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]string{
+		"status":  "success",
+		"message": "password changed successfully",
 	})
 }
